@@ -11,7 +11,6 @@ namespace Skynet.Data
         public DbSet<AirlineCompany> AirlineCompanies { get; set; }
         public DbSet<Country> Countries { get; set; }
         public DbSet<Customer> Customers { get; set; }
-        public DbSet<CustomerInfo> CustomerInfo { get; set; }
         public DbSet<Flight> Flights { get; set; }
         public DbSet<Ticket> Tickets { get; set; }
 
