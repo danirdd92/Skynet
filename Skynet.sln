@@ -5,11 +5,11 @@ VisualStudioVersion = 16.0.29806.167
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Server", "Server", "{E4EB1ECF-20E4-4F6E-A414-59041D3C28FA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Skynet.Domain", "Skynet.Domain\Skynet.Domain.csproj", "{D598A51A-0DC6-44E0-86C0-13FE64A6A021}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Skynet.Domain", "Skynet.Domain\Skynet.Domain.csproj", "{D598A51A-0DC6-44E0-86C0-13FE64A6A021}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Skynet.Data", "Skynet.Data\Skynet.Data.csproj", "{68CAEC63-DB89-4FAF-BA9E-DD29620DD4D1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Skynet.Data", "Skynet.Data\Skynet.Data.csproj", "{68CAEC63-DB89-4FAF-BA9E-DD29620DD4D1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Skynet.Web", "Skynet.Web\Skynet.Web.csproj", "{ACEB04F7-4918-429E-B560-13344ADE364E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Skynet.Web", "Skynet.Web\Skynet.Web.csproj", "{ACEB04F7-4918-429E-B560-13344ADE364E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -36,6 +36,7 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{D598A51A-0DC6-44E0-86C0-13FE64A6A021} = {E4EB1ECF-20E4-4F6E-A414-59041D3C28FA}
 		{68CAEC63-DB89-4FAF-BA9E-DD29620DD4D1} = {E4EB1ECF-20E4-4F6E-A414-59041D3C28FA}
+		{ACEB04F7-4918-429E-B560-13344ADE364E} = {E4EB1ECF-20E4-4F6E-A414-59041D3C28FA}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {16C8F403-77C7-4069-8FD1-CE0338FF035F}
