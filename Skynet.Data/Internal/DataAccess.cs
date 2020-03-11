@@ -31,13 +31,11 @@ namespace Skynet.Data.Internal
         {
             string connectionString = _config.GetConnectionString(connectionStringName);
 
-            using (IDbConnection connection = new SqlConnection(connectionString))
-            {
-                List<T> rows = connection.Query<T>(storedProcedure, parameters,
-                    commandType: CommandType.StoredProcedure).ToList();
+            using IDbConnection connection = new SqlConnection(connectionString);
+            List<T> rows = connection.Query<T>(storedProcedure, parameters, 
+                commandType: CommandType.StoredProcedure).ToList();
 
-                return rows;
-            }
+            return rows;
         }
 
         public void SaveData<T>(string storedProcedure,
