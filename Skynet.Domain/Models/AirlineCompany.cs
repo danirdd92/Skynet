@@ -1,5 +1,8 @@
-﻿namespace Skynet.Domain.Models
+﻿using Dapper.Contrib.Extensions;
+
+namespace Skynet.Domain.Models
 {
+    [Table("AirlineCompanies")]
     public class AirlineCompany 
     {
         public int Id { get; set; }
