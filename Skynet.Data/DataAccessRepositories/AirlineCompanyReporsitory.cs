@@ -10,9 +10,9 @@ using Dapper.Contrib.Extensions;
 
 namespace Skynet.Data.DataAccessRepositories
 {
-    public class AirlineCompanyReporsitory : Repository<AirlineCompany>, IAirlineCompanyReporsitory
+    public class AirlineCompanyRepository : Repository<AirlineCompany>, IAirlineCompanyRepository
     {
-        public AirlineCompanyReporsitory(IConfiguration config, IDbConnection connection) : base(config, connection)
+        public AirlineCompanyRepository(IConfiguration config, IDbConnection connection) : base(config, connection)
         {
 
         }
@@ -28,7 +28,7 @@ namespace Skynet.Data.DataAccessRepositories
     }
 
 
-    public interface IAirlineCompanyReporsitory : IRepository<AirlineCompany>
+    public interface IAirlineCompanyRepository : IRepository<AirlineCompany>
     {
 
         AirlineCompany GetAirlineByUserName(Customer customer);
