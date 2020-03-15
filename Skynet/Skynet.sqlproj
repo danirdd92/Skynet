@@ -146,4 +146,7 @@
     </Build>
     <Build Include="Security\Permissions.sql" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="PublishLocation\Skynet.publish.xml" />
+  </ItemGroup>
 </Project>
