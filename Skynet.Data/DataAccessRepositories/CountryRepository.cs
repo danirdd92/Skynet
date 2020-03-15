@@ -1,38 +1,18 @@
-﻿using Skynet.Data.Internal;
+﻿using Microsoft.Extensions.Configuration;
+using Skynet.Data.Internal;
 using Skynet.Domain.Models;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Text;
 
 namespace Skynet.Data.DataAccessRepositories
 {
-    interface ICountryRepository : ICrudRepository<Country> { }
-
-    public class CountryRepository : ICountryRepository
+    public class CountryRepository : Repository<Country>, ICountryRepository
     {
-        public void Add(Country item)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Country Get(int id)
-        {
-            throw new NotImplementedException();
-        }
-
-        public IEnumerable<Country> GetAll()
-        {
-            throw new NotImplementedException();
-        }
-
-        public void Remove()
-        {
-            throw new NotImplementedException();
-        }
-
-        public void Update()
-        {
-            throw new NotImplementedException();
-        }
+        public CountryRepository(IConfiguration config, IDbConnection connection) : base(config, connection) { }
     }
+
+    public interface ICountryRepository : IRepository<Country> { }
+
 }

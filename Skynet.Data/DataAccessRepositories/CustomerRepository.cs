@@ -1,45 +1,26 @@
-﻿using Skynet.Data.Internal;
+﻿using Microsoft.Extensions.Configuration;
+using Skynet.Data.Internal;
 using Skynet.Domain.Models;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Text;
 
 namespace Skynet.Data.DataAccessRepositories
 {
-    interface ICustomerRepository : ICrudRepository<Customer>
+    public class CustomerRepository : Repository<Customer>, ICustomerRepository
     {
-        Customer GetCustomerByUsername(string userName);
-    }
-    public class CustomerRepository : ICustomerRepository
-    {
-        public void Add(Customer item)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Customer Get(int id)
-        {
-            throw new NotImplementedException();
-        }
-
-        public IEnumerable<Customer> GetAll()
-        {
-            throw new NotImplementedException();
-        }
+        public CustomerRepository(IConfiguration config, IDbConnection connection) : base(config, connection) { }
 
         public Customer GetCustomerByUsername(string userName)
         {
             throw new NotImplementedException();
         }
-
-        public void Remove()
-        {
-            throw new NotImplementedException();
-        }
-
-        public void Update()
-        {
-            throw new NotImplementedException();
-        }
     }
+
+    public interface ICustomerRepository : IRepository<Customer>
+    {
+        Customer GetCustomerByUsername(string userName);
+    }
+
 }
