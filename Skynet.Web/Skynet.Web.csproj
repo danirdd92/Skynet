@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
-    <UserSecretsId>aspnet-Skynet.Web-B79830FE-7185-4DD7-A2B4-9579DB95C70B</UserSecretsId>
+    <UserSecretsId>aspnet-Skynet.Web-1DAF8412-6C6A-4B26-8B79-BA326083495D</UserSecretsId>
   </PropertyGroup>
 
 
@@ -15,13 +15,11 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="3.1.1" />
   </ItemGroup>
 
 
   <ItemGroup>
     <ProjectReference Include="..\Skynet.Data\Skynet.Data.csproj" />
-    <ProjectReference Include="..\Skynet.Domain\Skynet.Domain.csproj" />
   </ItemGroup>
 
 </Project>

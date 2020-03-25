@@ -12,10 +12,6 @@ using Skynet.Web.Data;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using System.Data;
-using System.Data.SqlClient;
-using Skynet.Data;
-using Skynet.Data.DataAccessRepositories;
 
 namespace Skynet.Web
 {
@@ -34,23 +30,8 @@ namespace Skynet.Web
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(
                     Configuration.GetConnectionString("DefaultConnection")));
-
-            services.AddDbContext<ApplicationDbContext>(options =>
-            options.UseSqlServer(
-                Configuration.GetConnectionString("Skynet")));
-
-            services.AddTransient<IDbConnection, SqlConnection>();
-            services.AddTransient<IAirlineCompanyRepository, AirlineCompanyRepository>();
-            services.AddTransient<ICustomerRepository, CustomerRepository>();
-            services.AddTransient<IFlightRepository, FlightRepository>();
-            services.AddTransient<ITicketRepository, TicketRepository>();
-            services.AddTransient<ICountryRepository, CountryRepository>();
-
             services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
                 .AddEntityFrameworkStores<ApplicationDbContext>();
-
-
-
             services.AddControllersWithViews();
             services.AddRazorPages();
         }
