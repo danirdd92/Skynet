@@ -3,13 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.29911.84
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Skynet.Domain", "Skynet.Domain\Skynet.Domain.csproj", "{E4D8761D-4E9E-4228-9CC9-AD79016873D4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Skynet.Domain", "Skynet.Domain\Skynet.Domain.csproj", "{E4D8761D-4E9E-4228-9CC9-AD79016873D4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Skynet.Data", "Skynet.Data\Skynet.Data.csproj", "{340643F9-E645-42B9-B390-C9BED8C0A8C6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Skynet.Data", "Skynet.Data\Skynet.Data.csproj", "{340643F9-E645-42B9-B390-C9BED8C0A8C6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConsoleApp", "ConsoleApp\ConsoleApp.csproj", "{7670AEB3-AC2E-49A6-ADEF-5BC8CD74009B}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Skynet.Web", "..\..\..\Desktop\Skynet\Skynet.Web\Skynet.Web.csproj", "{BA86A7DB-7BAF-403E-A6B5-C1FEF8B628A3}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Skynet.Web", "Skynet.Web\Skynet.Web.csproj", "{F154BB45-240B-47FE-A7B1-B35F42FC601E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -25,14 +23,10 @@ Global
 		{340643F9-E645-42B9-B390-C9BED8C0A8C6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{340643F9-E645-42B9-B390-C9BED8C0A8C6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{340643F9-E645-42B9-B390-C9BED8C0A8C6}.Release|Any CPU.Build.0 = Release|Any CPU
-		{7670AEB3-AC2E-49A6-ADEF-5BC8CD74009B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{7670AEB3-AC2E-49A6-ADEF-5BC8CD74009B}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{7670AEB3-AC2E-49A6-ADEF-5BC8CD74009B}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{7670AEB3-AC2E-49A6-ADEF-5BC8CD74009B}.Release|Any CPU.Build.0 = Release|Any CPU
-		{BA86A7DB-7BAF-403E-A6B5-C1FEF8B628A3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{BA86A7DB-7BAF-403E-A6B5-C1FEF8B628A3}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{BA86A7DB-7BAF-403E-A6B5-C1FEF8B628A3}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{BA86A7DB-7BAF-403E-A6B5-C1FEF8B628A3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F154BB45-240B-47FE-A7B1-B35F42FC601E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F154BB45-240B-47FE-A7B1-B35F42FC601E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F154BB45-240B-47FE-A7B1-B35F42FC601E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F154BB45-240B-47FE-A7B1-B35F42FC601E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
