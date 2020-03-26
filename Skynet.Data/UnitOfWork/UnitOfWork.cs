@@ -8,11 +8,11 @@ namespace Skynet.Data.UnitOfWork
 {
     public class UnitOfWork : IUnitOfWork
     {
-        private readonly DbContext _context;
+        private readonly SkynetContext _context;
 
-        public UnitOfWork(DbContext context )
+        public UnitOfWork(SkynetContext context )
         {
-            _context = context as SkynetContext;
+            _context = context;
 
             Airlines = new AirlineRepository(_context);
             Countries = new CountryRepository(_context);
@@ -32,9 +32,26 @@ namespace Skynet.Data.UnitOfWork
             return _context.SaveChanges();
         }
 
+        #region Dispose
+        private bool _disposed = false;
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (!_disposed)
+            {
+                if (disposing)
+                {
+                    _context.Dispose();
+                }
+            }
+            _disposed = true;
+        }
+
         public void Dispose()
         {
-            _context.Dispose();
+            Dispose(true);
+            GC.SuppressFinalize(this);
         }
+        #endregion
     }
 }
