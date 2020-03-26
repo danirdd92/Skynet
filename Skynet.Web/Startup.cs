@@ -12,6 +12,9 @@ using Skynet.Web.Data;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Skynet.Data.UnitOfWork;
+using Skynet.Data;
+using Skynet.Data.Repositories;
 
 namespace Skynet.Web
 {
@@ -27,11 +30,27 @@ namespace Skynet.Web
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            // Auth Database
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(
-                    Configuration.GetConnectionString("DefaultConnection")));
+                    Configuration.GetConnectionString("SkynetAuthDB")));
+            // Skynet Database
+            services.AddDbContext<SkynetContext>(options =>
+                options.UseSqlServer(
+                    Configuration.GetConnectionString("Skynet")));
+
+            // Dependency Injection
+            services.AddTransient<IUnitOfWork, UnitOfWork>();
+            //services.AddTransient<IFlightRepository, FlightRepository>();
+            //services.AddTransient<ICountryRepository, CountryRepository>();
+            //services.AddTransient<IAirlineRepository, AirlineRepository>();
+            //services.AddTransient<IUserRepository, UserRepository>();
+
+            // Authentication and Authorization 
             services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
                 .AddEntityFrameworkStores<ApplicationDbContext>();
+
+            // MVC And Razor Pages
             services.AddControllersWithViews();
             services.AddRazorPages();
         }

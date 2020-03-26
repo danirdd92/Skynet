@@ -4,8 +4,9 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Skynet.Data.DataAccessRepositories;
-using Skynet.Domain.Models;
+using Microsoft.EntityFrameworkCore;
+using Skynet.Data;
+using Skynet.Domain;
 
 namespace Skynet.Web.Controllers
 {
@@ -13,47 +14,97 @@ namespace Skynet.Web.Controllers
     [ApiController]
     public class CountriesController : ControllerBase
     {
-        private readonly ICountryRepository _repo;
+        private readonly SkynetContext _context;
 
-        public CountriesController(ICountryRepository repo)
+        public CountriesController(SkynetContext context)
         {
-            _repo = repo;
+            _context = context;
         }
 
-        [HttpGet("/{id}")]
-        public IActionResult Get(int id)
+        // GET: api/Countries
+        [HttpGet]
+        public async Task<ActionResult<IEnumerable<Country>>> GetCountries()
         {
-            var country = _repo.Get(id);
-            return Ok(country);
+            return await _context.Countries.ToListAsync();
         }
 
-        [HttpGet()]
-        public IActionResult GetAll()
+        // GET: api/Countries/5
+        [HttpGet("{id}")]
+        public async Task<ActionResult<Country>> GetCountry(int id)
         {
-            var country = _repo.GetAll();
-            return Ok(country);
+            var country = await _context.Countries.FindAsync(id);
+
+            if (country == null)
+            {
+                return NotFound();
+            }
+
+            return country;
         }
 
-        [HttpPost()]
-        public IActionResult Post(Country country)
+        // PUT: api/Countries/5
+        // To protect from overposting attacks, please enable the specific properties you want to bind to, for
+        // more details see https://aka.ms/RazorPagesCRUD.
+        [HttpPut("{id}")]
+        public async Task<IActionResult> PutCountry(int id, Country country)
         {
-            _repo.Add(country);
-            return Ok(country);
+            if (id != country.Id)
+            {
+                return BadRequest();
+            }
+
+            _context.Entry(country).State = EntityState.Modified;
+
+            try
+            {
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!CountryExists(id))
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    throw;
+                }
+            }
+
+            return NoContent();
         }
 
-        [HttpPut()]
-        public IActionResult Update(Country country)
+        // POST: api/Countries
+        // To protect from overposting attacks, please enable the specific properties you want to bind to, for
+        // more details see https://aka.ms/RazorPagesCRUD.
+        [HttpPost]
+        public async Task<ActionResult<Country>> PostCountry(Country country)
         {
-            _repo.Update(country);
-            return Ok();
+            _context.Countries.Add(country);
+            await _context.SaveChangesAsync();
+
+            return CreatedAtAction("GetCountry", new { id = country.Id }, country);
         }
 
-
-        [HttpDelete()]
-        public IActionResult Delete(int id)
+        // DELETE: api/Countries/5
+        [HttpDelete("{id}")]
+        public async Task<ActionResult<Country>> DeleteCountry(int id)
         {
-            _repo.Remove(id);
-            return Ok();
+            var country = await _context.Countries.FindAsync(id);
+            if (country == null)
+            {
+                return NotFound();
+            }
+
+            _context.Countries.Remove(country);
+            await _context.SaveChangesAsync();
+
+            return country;
+        }
+
+        private bool CountryExists(int id)
+        {
+            return _context.Countries.Any(e => e.Id == id);
         }
     }
 }
