@@ -11,9 +11,9 @@ namespace Skynet.Data.Repositories
 {
     public class FlightRepository : Repository<Flight>, IFlightRepository
     {
-        private readonly DbContext _context;
+        private readonly SkynetContext _context;
 
-        public FlightRepository(DbContext context) : base(context)
+        public FlightRepository(SkynetContext context) : base(context)
         {
             _context = context;
         }

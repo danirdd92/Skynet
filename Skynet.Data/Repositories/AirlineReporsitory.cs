@@ -10,9 +10,9 @@ namespace Skynet.Data.Repositories
 {
     public class AirlineRepository : Repository<Airline>, IAirlineRepository
     {
-        private readonly DbContext _context;
+        private readonly SkynetContext _context;
 
-        public AirlineRepository(DbContext context) : base(context) {
+        public AirlineRepository(SkynetContext context) : base(context) {
             _context = context;
         }
         public IEnumerable<Airline> GetAirlineByCountry(Country country)

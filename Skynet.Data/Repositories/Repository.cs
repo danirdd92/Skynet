@@ -27,9 +27,9 @@ namespace Skynet.Data.Repositories
 
     public class Repository<T> : IRepository<T> where T : class
     {
-        private readonly DbContext _context;
+        private readonly SkynetContext _context;
 
-        public Repository(DbContext context)
+        public Repository(SkynetContext context)
         {
             _context = context;
         }

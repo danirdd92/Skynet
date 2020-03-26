@@ -11,7 +11,11 @@ namespace Skynet.Data.Repositories
 {
     public class CountryRepository : Repository<Country>, ICountryRepository
     {
-        public CountryRepository(DbContext context) : base(context) { }
+        private readonly SkynetContext _context;
+
+        public CountryRepository(SkynetContext context) : base(context) {
+            _context = context;
+        }
     }
 
 public interface ICountryRepository : IRepository<Country> { }

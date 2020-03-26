@@ -11,10 +11,10 @@ namespace Skynet.Data.Repositories
 {
     public class UserRepository : Repository<User>, IUserRepository
     {
-        private readonly DbContext _context;
+        private readonly SkynetContext _context;
 
-        public UserRepository(DbContext context) : base(context) {
-            _context = context;
+        public UserRepository(SkynetContext context) : base(context) {
+            _context = context ;
         }
 
         public User GetCustomerByUsername(string userName)

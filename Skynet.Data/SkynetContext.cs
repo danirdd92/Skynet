@@ -1,29 +1,28 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Skynet.Domain;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace Skynet.Data
 {
-    class SkynetContext : DbContext
+    public class SkynetContext : DbContext
     {
-        private readonly IConfiguration _config;
+        private readonly DbContextOptions<SkynetContext> _options;
 
         public DbSet<Airline> Airlines { get; set; }
         public DbSet<Country> Countries { get; set; }
         public DbSet<User> Users { get; set; }
         public DbSet<Flight> Flights { get; set; }
-        public SkynetContext(IConfiguration config)
+
+        public SkynetContext(DbContextOptions<SkynetContext> options) : base(options)
         {
-            _config = config;
+            ChangeTracker.QueryTrackingBehavior = QueryTrackingBehavior.NoTracking;
         }
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {
-            optionsBuilder
-               .UseSqlServer(_config.GetConnectionString("Skynet"));
-        }
+
+        //protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        //{
+        //    optionsBuilder
+        //       .UseSqlServer("Data Source=DANIEL;Initial Catalog=Skynet;Integrated Security=True");
+        //}
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
