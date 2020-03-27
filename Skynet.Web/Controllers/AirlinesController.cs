@@ -22,9 +22,10 @@ namespace Skynet.Web.Controllers
 
         // GET: api/Airlines
         [HttpGet]
-        public IEnumerable<string> Get()
+        public ActionResult<Airline> Get()
         {
-            return new string[] { "value1", "value2" };
+            var airlines = _unit.Airlines.GetAll();
+            return Ok(airlines);
         }
 
         // GET: api/Airlines/5
@@ -59,6 +60,13 @@ namespace Skynet.Web.Controllers
             _unit.Complete();
             return airline;
 
+        }
+
+        [HttpGet("/{country}")]
+        public ActionResult<IEnumerable<Airline>> GetAirlineByCountry([FromRoute] Country country)
+        {
+            var airlines = _unit.Airlines.GetAirlineByCountry(country);
+            return Ok(airlines);
         }
     }
 }
