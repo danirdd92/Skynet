@@ -32,7 +32,7 @@ namespace Skynet.Web.Controllers
 
 
 
-        [HttpGet("{id}", Name = "Get")]
+        [HttpGet("{id}")]
         public ActionResult<Flight> GetFlightById(int id)
         {
             var flight = _db.Flights.Get(id);

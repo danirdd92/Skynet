@@ -32,7 +32,7 @@ namespace Skynet.Web.Controllers
 
 
 
-        [HttpGet("{id}", Name = "Get")]
+        [HttpGet("{id}")]
         public ActionResult<User> GetUserById(int id)
         {
             var user = _db.Users.Get(id);

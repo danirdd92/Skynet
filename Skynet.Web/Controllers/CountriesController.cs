@@ -31,10 +31,10 @@ namespace Skynet.Web.Controllers
 
 
 
-        [HttpGet("{id}", Name = "Get")]
+        [HttpGet("{id}")]
         public ActionResult<Country> GetCountryById(int id)
         {
-            var country = _db.Airlines.Get(id);
+            var country = _db.Countries.Get(id);
 
             if (country == null)
             {
