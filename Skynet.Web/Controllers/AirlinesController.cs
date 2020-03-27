@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Skynet.Data.UnitOfWork;
 using Skynet.Domain;
 using System.Collections.Generic;
@@ -9,60 +10,111 @@ namespace Skynet.Web.Controllers
     [ApiController]
     public class AirlinesController : ControllerBase
     {
-        private readonly IUnitOfWork _unit;
+        private readonly IUnitOfWork _db;
 
-        public AirlinesController(IUnitOfWork unit)
+        public AirlinesController(IUnitOfWork db)
         {
-            _unit = unit;
+            _db = db;
         }
 
-        // GET: api/Airlines
+
+
         [HttpGet]
-        public ActionResult<Airline> Get()
+        public ActionResult<Airline> GetAllAirlines()
         {
-            var airlines = _unit.Airlines.GetAll();
+            var airlines = _db.Airlines.GetAll();
             return Ok(airlines);
         }
 
-        // GET: api/Airlines/5
+
+
         [HttpGet("{id}", Name = "Get")]
-        public string Get(int id)
+        public ActionResult<Airline> GetAirlineById(int id)
         {
-            return "value";
+            var airline = _db.Airlines.Get(id);
+
+            if (airline == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(airline);
         }
 
-        // POST: api/Airlines
+
+
         [HttpPost]
-        public void Post([FromBody] string value)
+        public ActionResult<Airline> PostAirline([FromBody] Airline airline)
         {
+            _db.Airlines.Add(airline);
+            _db.Complete();
+
+            return CreatedAtAction("GetAirlineById", new { id = airline.Id }, airline);
         }
 
-        // PUT: api/Airlines/5
+
+
         [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
+        public ActionResult<Airline> UpdateAirline(int id, [FromBody] Airline airline)
         {
+            if (id != airline.Id)
+            {
+                return BadRequest();
+            }
+
+            _db.Airlines.Update(airline);
+
+            try
+            {
+                _db.Complete();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!AirlineExists(id, airline))
+                {
+                    return NotFound(airline);
+                }
+                else
+                {
+                    throw;
+                }
+            }
+
+            return NoContent();
         }
 
-        // DELETE: api/Airlines/5
+
+
         [HttpDelete("{id}")]
         public ActionResult<Airline> DeleteAirline(int id)
         {
-            var airline = _unit.Airlines.Get(id);
+            var airline = _db.Airlines.Get(id);
             if (airline == null)
             {
                 return NotFound(airline);
             }
-            _unit.Airlines.Remove(airline);
-            _unit.Complete();
+            _db.Airlines.Remove(airline);
+            _db.Complete();
             return airline;
 
         }
 
-        [HttpGet("/{country}")]
-        public ActionResult<IEnumerable<Airline>> GetAirlineByCountry([FromRoute] Country country)
+
+        [HttpGet("/Country/{id}")]
+        public ActionResult<IEnumerable<Airline>> GetAirlineByCountry(int id)
         {
-            var airlines = _unit.Airlines.GetAirlineByCountry(country);
+            var country = _db.Countries.Get(id);
+            var airlines = _db.Airlines.GetAirlineByCountry(country);
             return Ok(airlines);
+        }
+
+        private bool AirlineExists(int id, Airline airline)
+        {
+            if (_db.Airlines.Find(a => a.Id.Equals(airline.Id)) == null)
+            {
+                return false;
+            }
+            return true;
         }
     }
 }

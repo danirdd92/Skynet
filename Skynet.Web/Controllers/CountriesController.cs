@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Skynet.Data;
+using Skynet.Data.UnitOfWork;
 using Skynet.Domain;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,56 +13,69 @@ namespace Skynet.Web.Controllers
     [ApiController]
     public class CountriesController : ControllerBase
     {
-        private readonly SkynetContext _context;
+        private readonly IUnitOfWork _db;
 
-        public CountriesController(SkynetContext context)
+        public CountriesController(IUnitOfWork db)
         {
-            _context = context;
+            _db = db;
         }
 
-        // GET: api/Countries
+
+
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Country>>> GetCountries()
+        public ActionResult<Country> GetAllCountries()
         {
-            return await _context.Countries.ToListAsync();
+            var countries = _db.Countries.GetAll();
+            return Ok(countries);
         }
 
-        // GET: api/Countries/5
-        [HttpGet("{id}")]
-        public async Task<ActionResult<Country>> GetCountry(int id)
+
+
+        [HttpGet("{id}", Name = "Get")]
+        public ActionResult<Country> GetCountryById(int id)
         {
-            var country = await _context.Countries.FindAsync(id);
+            var country = _db.Airlines.Get(id);
 
             if (country == null)
             {
                 return NotFound();
             }
 
-            return country;
+            return Ok(country);
         }
 
-        // PUT: api/Countries/5
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for
-        // more details see https://aka.ms/RazorPagesCRUD.
+
+
+        [HttpPost]
+        public ActionResult<Country> PostCountry([FromBody] Country country)
+        {
+            _db.Countries.Add(country);
+            _db.Complete();
+
+            return CreatedAtAction("GetCountryById", new { id = country.Id }, country);
+        }
+
+
+
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutCountry(int id, Country country)
+        public ActionResult<Country> UpdateCountry(int id, [FromBody] Country country)
         {
             if (id != country.Id)
             {
                 return BadRequest();
             }
 
-            _context.Entry(country).State = EntityState.Modified;
+            _db.Countries.Update(country);
 
             try
             {
-                await _context.SaveChangesAsync();
+                _db.Complete();
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!CountryExists(id))
+                if (!CountryExists(id, country))
                 {
-                    return NotFound();
+                    return NotFound(country);
                 }
                 else
                 {
@@ -72,37 +86,30 @@ namespace Skynet.Web.Controllers
             return NoContent();
         }
 
-        // POST: api/Countries
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for
-        // more details see https://aka.ms/RazorPagesCRUD.
-        [HttpPost]
-        public async Task<ActionResult<Country>> PostCountry(Country country)
-        {
-            _context.Countries.Add(country);
-            await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetCountry", new { id = country.Id }, country);
-        }
 
-        // DELETE: api/Countries/5
         [HttpDelete("{id}")]
-        public async Task<ActionResult<Country>> DeleteCountry(int id)
+        public ActionResult<Country> DeleteCountry(int id)
         {
-            var country = await _context.Countries.FindAsync(id);
+            var country = _db.Countries.Get(id);
             if (country == null)
             {
-                return NotFound();
+                return NotFound(country);
             }
-
-            _context.Countries.Remove(country);
-            await _context.SaveChangesAsync();
-
+            _db.Countries.Remove(country);
+            _db.Complete();
             return country;
+
         }
 
-        private bool CountryExists(int id)
+
+        private bool CountryExists(int id, Country country)
         {
-            return _context.Countries.Any(e => e.Id == id);
+            if (_db.Countries.Find(a => a.Id.Equals(country.Id)) == null)
+            {
+                return false;
+            }
+            return true;
         }
     }
 }
