@@ -17,7 +17,7 @@ namespace Skynet.Data.Repositories
         }
         public IEnumerable<Airline> GetAirlineByCountry(Country country)
         {
-            var airlines = _context.Set<Airline>().Where(a => a.Country.Id == country.Id);
+            var airlines = _context.Set<Airline>().Where(a => a.Country.Id.Equals(country.Id));
             return airlines;
         }
 
