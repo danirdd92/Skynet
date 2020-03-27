@@ -15,6 +15,8 @@ using Microsoft.Extensions.Hosting;
 using Skynet.Data.UnitOfWork;
 using Skynet.Data;
 using Skynet.Data.Repositories;
+using Skynet.Web.JsonResolver;
+using Newtonsoft.Json.Serialization;
 
 namespace Skynet.Web
 {
@@ -41,10 +43,11 @@ namespace Skynet.Web
 
             // Dependency Injection
             services.AddTransient<IUnitOfWork, UnitOfWork>();
-            //services.AddTransient<IFlightRepository, FlightRepository>();
-            //services.AddTransient<ICountryRepository, CountryRepository>();
-            //services.AddTransient<IAirlineRepository, AirlineRepository>();
-            //services.AddTransient<IUserRepository, UserRepository>();
+            //services.AddSingleton<IContractResolver, CustomResolver>();
+
+            services.AddControllers()
+                        .AddNewtonsoftJson(opt =>
+                        opt.SerializerSettings.ContractResolver = new CustomResolver());
 
             // Authentication and Authorization 
             services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
