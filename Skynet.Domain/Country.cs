@@ -14,7 +14,7 @@ namespace Skynet.Domain
         public string Name { get; set; }
 
 
-        public List<Flight> OutboundFlights { get; set; }
-        public List<Flight> InboundFlights { get; set; }
+        public virtual List<Flight> OutboundFlights { get; set; }
+        public virtual List<Flight> InboundFlights { get; set; }
     }
 }

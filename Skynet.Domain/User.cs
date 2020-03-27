@@ -17,7 +17,7 @@ namespace Skynet.Domain
         public string Password { get; set; }
 
 
-        public UserDescription UserDescription { get; set; }
-        public List<Ticket> Tickets { get; set; }
+        public virtual UserDescription UserDescription { get; set; }
+        public virtual List<Ticket> Tickets { get; set; }
     }
 }
