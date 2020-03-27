@@ -1,8 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
-using Skynet.Data.Repositories;
+﻿using Skynet.Data.Repositories;
 using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace Skynet.Data.UnitOfWork
 {
@@ -10,7 +7,7 @@ namespace Skynet.Data.UnitOfWork
     {
         private readonly SkynetContext _context;
 
-        public UnitOfWork(SkynetContext context )
+        public UnitOfWork(SkynetContext context)
         {
             _context = context;
 
@@ -21,11 +18,11 @@ namespace Skynet.Data.UnitOfWork
         }
         public IAirlineRepository Airlines { get; private set; }
 
-        public ICountryRepository Countries {get; private set;}
+        public ICountryRepository Countries { get; private set; }
 
-        public IFlightRepository Flights {get; private set;}
+        public IFlightRepository Flights { get; private set; }
 
-        public IUserRepository Users {get; private set;}
+        public IUserRepository Users { get; private set; }
 
         public int Complete()
         {

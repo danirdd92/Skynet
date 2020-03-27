@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Text;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace Skynet.Domain
 {
@@ -9,6 +6,7 @@ namespace Skynet.Domain
     {
         [Required]
         public int FlightId { get; set; }
+
         [Required]
         public int UserId { get; set; }
 

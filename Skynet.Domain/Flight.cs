@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Text;
 
 namespace Skynet.Domain
 {
@@ -9,16 +8,22 @@ namespace Skynet.Domain
     {
         [Required]
         public int Id { get; set; }
+
         [Required]
         public int AirlineId { get; set; }
+
         [Required]
         public int OriginCountryId { get; set; }
+
         [Required]
         public int DestinationCountryId { get; set; }
+
         [Required]
         public DateTime Departure { get; set; }
+
         [Required]
         public DateTime Arrival { get; set; }
+
         [Required]
         public int RemainingTickets { get; set; }
 

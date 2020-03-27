@@ -1,10 +1,8 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿using Microsoft.EntityFrameworkCore;
+using Skynet.Domain;
 using System;
 using System.Collections.Generic;
 using System.Data;
-using System.Text;
-using Skynet.Domain;
-using Microsoft.EntityFrameworkCore;
 using System.Linq;
 
 namespace Skynet.Data.Repositories

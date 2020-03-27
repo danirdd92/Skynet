@@ -1,10 +1,5 @@
-﻿using Microsoft.Extensions.Configuration;
-using System;
-using System.Collections.Generic;
+﻿using Skynet.Domain;
 using System.Data;
-using System.Text;
-using Skynet.Domain;
-using Microsoft.EntityFrameworkCore;
 using System.Linq;
 
 namespace Skynet.Data.Repositories
@@ -13,8 +8,9 @@ namespace Skynet.Data.Repositories
     {
         private readonly SkynetContext _context;
 
-        public UserRepository(SkynetContext context) : base(context) {
-            _context = context ;
+        public UserRepository(SkynetContext context) : base(context)
+        {
+            _context = context;
         }
 
         public User GetCustomerByUsername(string userName)

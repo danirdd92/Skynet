@@ -1,5 +1,3 @@
-using System;
-
 namespace Skynet.Web.Models
 {
     public class ErrorViewModel

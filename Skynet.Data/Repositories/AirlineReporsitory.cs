@@ -1,10 +1,8 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿using Skynet.Domain;
+using System;
 using System.Collections.Generic;
 using System.Data;
-using Skynet.Domain;
-using Microsoft.EntityFrameworkCore;
 using System.Linq;
-using System;
 
 namespace Skynet.Data.Repositories
 {
@@ -12,7 +10,8 @@ namespace Skynet.Data.Repositories
     {
         private readonly SkynetContext _context;
 
-        public AirlineRepository(SkynetContext context) : base(context) {
+        public AirlineRepository(SkynetContext context) : base(context)
+        {
             _context = context;
         }
         public IEnumerable<Airline> GetAirlineByCountry(Country country)

@@ -1,5 +1,4 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
 using Skynet.Domain;
 
 namespace Skynet.Data
@@ -18,12 +17,6 @@ namespace Skynet.Data
             ChangeTracker.QueryTrackingBehavior = QueryTrackingBehavior.NoTracking;
         }
 
-        //protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        //{
-        //    optionsBuilder
-        //       .UseSqlServer("Data Source=DANIEL;Initial Catalog=Skynet;Integrated Security=True");
-        //}
-
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             // Many To Many For Users and Flights
@@ -34,20 +27,19 @@ namespace Skynet.Data
                 .HasOne(c => c.User)
                 .WithMany(t => t.Tickets)
                 .HasForeignKey(c => c.UserId);
+
             modelBuilder.Entity<Ticket>()
                 .HasOne(f => f.Flight)
                 .WithMany(t => t.Tickets)
                 .HasForeignKey(f => f.FlightId);
 
             // One To One Users and User Description
-
             modelBuilder.Entity<User>()
                 .HasOne(d => d.UserDescription)
                 .WithOne(u => u.User)
                 .HasForeignKey<UserDescription>(d => d.UserId);
 
-            // Flight Entity
-
+            // Flight Entity FKs
             modelBuilder.Entity<Flight>()
             .HasOne(p => p.OriginCountry)
             .WithMany(b => b.OutboundFlights)

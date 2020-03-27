@@ -1,11 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
-using Skynet.Data.Repositories;
-using Skynet.Domain;
-using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Text;
+﻿using Skynet.Domain;
 
 namespace Skynet.Data.Repositories
 {
@@ -13,11 +6,12 @@ namespace Skynet.Data.Repositories
     {
         private readonly SkynetContext _context;
 
-        public CountryRepository(SkynetContext context) : base(context) {
+        public CountryRepository(SkynetContext context) : base(context)
+        {
             _context = context;
         }
     }
 
-public interface ICountryRepository : IRepository<Country> { }
+    public interface ICountryRepository : IRepository<Country> { }
 
 }
