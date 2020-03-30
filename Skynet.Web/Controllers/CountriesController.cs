@@ -1,11 +1,11 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using Skynet.Data;
+using Skynet.Data.UnitOfWork;
+using Skynet.Domain;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using Skynet.Data.DataAccessRepositories;
-using Skynet.Domain.Models;
 
 namespace Skynet.Web.Controllers
 {
@@ -13,47 +13,103 @@ namespace Skynet.Web.Controllers
     [ApiController]
     public class CountriesController : ControllerBase
     {
-        private readonly ICountryRepository _repo;
+        private readonly IUnitOfWork _db;
 
-        public CountriesController(ICountryRepository repo)
+        public CountriesController(IUnitOfWork db)
         {
-            _repo = repo;
+            _db = db;
         }
 
-        [HttpGet("/{id}")]
-        public IActionResult Get(int id)
+
+
+        [HttpGet]
+        public ActionResult<Country> GetAllCountries()
         {
-            var country = _repo.Get(id);
+            var countries = _db.Countries.GetAll();
+            return Ok(countries);
+        }
+
+
+
+        [HttpGet("{id}")]
+        public ActionResult<Country> GetCountryById(int id)
+        {
+            var country = _db.Countries.Get(id);
+
+            if (country == null)
+            {
+                return NotFound();
+            }
+
             return Ok(country);
         }
 
-        [HttpGet()]
-        public IActionResult GetAll()
-        {
-            var country = _repo.GetAll();
-            return Ok(country);
-        }
 
-        [HttpPost()]
-        public IActionResult Post(Country country)
-        {
-            _repo.Add(country);
-            return Ok(country);
-        }
 
-        [HttpPut()]
-        public IActionResult Update(Country country)
+        [HttpPost]
+        public ActionResult<Country> PostCountry([FromBody] Country country)
         {
-            _repo.Update(country);
-            return Ok();
+            _db.Countries.Add(country);
+            _db.Complete();
+
+            return CreatedAtAction("GetCountryById", new { id = country.Id }, country);
         }
 
 
-        [HttpDelete()]
-        public IActionResult Delete(int id)
+
+        [HttpPut("{id}")]
+        public ActionResult<Country> UpdateCountry(int id, [FromBody] Country country)
         {
-            _repo.Remove(id);
-            return Ok();
+            if (id != country.Id)
+            {
+                return BadRequest();
+            }
+
+            _db.Countries.Update(country);
+
+            try
+            {
+                _db.Complete();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!CountryExists(id, country))
+                {
+                    return NotFound(country);
+                }
+                else
+                {
+                    throw;
+                }
+            }
+
+            return NoContent();
+        }
+
+
+
+        [HttpDelete("{id}")]
+        public ActionResult<Country> DeleteCountry(int id)
+        {
+            var country = _db.Countries.Get(id);
+            if (country == null)
+            {
+                return NotFound(country);
+            }
+            _db.Countries.Remove(country);
+            _db.Complete();
+            return country;
+
+        }
+
+
+        private bool CountryExists(int id, Country country)
+        {
+            if (_db.Countries.Find(a => a.Id.Equals(country.Id)) == null)
+            {
+                return false;
+            }
+            return true;
         }
     }
 }

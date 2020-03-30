@@ -1,21 +1,15 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity.UI;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using Skynet.Web.Data;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using System.Data;
-using System.Data.SqlClient;
 using Skynet.Data;
-using Skynet.Data.DataAccessRepositories;
+using Skynet.Data.UnitOfWork;
+using Skynet.Web.Data;
+using Skynet.Web.JsonResolver;
+using Microsoft.OpenApi.Models;
 
 namespace Skynet.Web
 {
@@ -31,28 +25,38 @@ namespace Skynet.Web
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            // Auth Database
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(
-                    Configuration.GetConnectionString("DefaultConnection")));
+                    Configuration.GetConnectionString("SkynetAuthDB")));
+            // Skynet Database
+            services.AddDbContext<SkynetContext>(options =>
+                options.UseSqlServer(
+                    Configuration.GetConnectionString("Skynet")));
 
-            services.AddDbContext<ApplicationDbContext>(options =>
-            options.UseSqlServer(
-                Configuration.GetConnectionString("Skynet")));
+            // Dependency Injection
+            services.AddTransient<IUnitOfWork, UnitOfWork>();
+            //services.AddSingleton<IContractResolver, CustomResolver>();
 
-            services.AddTransient<IDbConnection, SqlConnection>();
-            services.AddTransient<IAirlineCompanyRepository, AirlineCompanyRepository>();
-            services.AddTransient<ICustomerRepository, CustomerRepository>();
-            services.AddTransient<IFlightRepository, FlightRepository>();
-            services.AddTransient<ITicketRepository, TicketRepository>();
-            services.AddTransient<ICountryRepository, CountryRepository>();
+            services.AddControllers()
+                        .AddNewtonsoftJson(opt =>
+                        opt.SerializerSettings.ContractResolver = new CustomResolver());
 
+            // Authentication and Authorization 
             services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
                 .AddEntityFrameworkStores<ApplicationDbContext>();
 
-
-
+            // MVC And Razor Pages
             services.AddControllersWithViews();
             services.AddRazorPages();
+            services.AddMvc();
+
+            // Swagger
+            services.AddSwaggerGen(c =>
+            {
+                c.SwaggerDoc("v1", new OpenApiInfo { Title = "Skynet API", Version = "v1" });
+            });
+            services.AddSwaggerGenNewtonsoftSupport();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -69,6 +73,11 @@ namespace Skynet.Web
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
+            app.UseSwagger();
+            app.UseSwaggerUI(c =>
+            {
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "Skynet API V1");
+            });
             app.UseHttpsRedirection();
             app.UseStaticFiles();
 

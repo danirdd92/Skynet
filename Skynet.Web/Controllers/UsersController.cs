@@ -12,11 +12,11 @@ namespace Skynet.Web.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class FlightsController : ControllerBase
+    public class UsersController : ControllerBase
     {
         private readonly IUnitOfWork _db;
 
-        public FlightsController(IUnitOfWork db)
+        public UsersController(IUnitOfWork db)
         {
             _db = db;
         }
@@ -24,49 +24,49 @@ namespace Skynet.Web.Controllers
 
 
         [HttpGet]
-        public ActionResult<Flight> GetAllFlights()
+        public ActionResult<User> GetAllUsers()
         {
-            var flights = _db.Flights.GetAll();
-            return Ok(flights);
+            var users = _db.Users.GetAll();
+            return Ok(users);
         }
 
 
 
         [HttpGet("{id}")]
-        public ActionResult<Flight> GetFlightById(int id)
+        public ActionResult<User> GetUserById(int id)
         {
-            var flight = _db.Flights.Get(id);
+            var user = _db.Users.Get(id);
 
-            if (flight == null)
+            if (user == null)
             {
                 return NotFound();
             }
 
-            return Ok(flight);
+            return Ok(user);
         }
 
 
 
         [HttpPost]
-        public ActionResult<Flight> PostFlight([FromBody] Flight flight)
+        public ActionResult<User> PostUser([FromBody] User user)
         {
-            _db.Flights.Add(flight);
+            _db.Users.Add(user);
             _db.Complete();
 
-            return CreatedAtAction("GetFlightById", new { id = flight.Id }, flight);
+            return CreatedAtAction("GetUserById", new { id = user.Id }, user);
         }
 
 
 
         [HttpPut("{id}")]
-        public ActionResult<Flight> UpdateFlight(int id, [FromBody] Flight flight)
+        public ActionResult<User> UpdateUser(int id, [FromBody] User user)
         {
-            if (id != flight.Id)
+            if (id != user.Id)
             {
                 return BadRequest();
             }
 
-            _db.Flights.Update(flight);
+            _db.Users.Update(user);
 
             try
             {
@@ -74,9 +74,9 @@ namespace Skynet.Web.Controllers
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!FlightExists(id, flight))
+                if (!UserExists(id, user))
                 {
-                    return NotFound(flight);
+                    return NotFound(user);
                 }
                 else
                 {
@@ -90,23 +90,23 @@ namespace Skynet.Web.Controllers
 
 
         [HttpDelete("{id}")]
-        public ActionResult<Flight> DeleteAirline(int id)
+        public ActionResult<User> DeleteUser(int id)
         {
-            var flight = _db.Flights.Get(id);
-            if (flight == null)
+            var user = _db.Users.Get(id);
+            if (user == null)
             {
-                return NotFound(flight);
+                return NotFound(user);
             }
-            _db.Flights.Remove(flight);
+            _db.Users.Remove(user);
             _db.Complete();
-            return flight;
+            return user;
 
         }
 
 
-        private bool FlightExists(int id, Flight flight)
+        private bool UserExists(int id, User user)
         {
-            if (_db.Flights.Find(a => a.Id.Equals(flight.Id)) == null)
+            if (_db.Users.Find(a => a.Id.Equals(user.Id)) == null)
             {
                 return false;
             }
