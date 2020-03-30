@@ -5,11 +5,11 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.OpenApi.Models;
 using Skynet.Data;
 using Skynet.Data.UnitOfWork;
 using Skynet.Web.Data;
 using Skynet.Web.JsonResolver;
-using Microsoft.OpenApi.Models;
 
 namespace Skynet.Web
 {
