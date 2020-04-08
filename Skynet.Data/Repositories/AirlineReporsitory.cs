@@ -20,7 +20,7 @@ namespace Skynet.Data.Repositories
             return airlines;
         }
 
-        public Airline GetAirlineByUserName(User user)
+        public Airline GetAirlineByCustomerName(Customer customer)
         {
             // Todo: Return to this after authentication
             throw new Exception("Not Implemented yet");
@@ -31,7 +31,7 @@ namespace Skynet.Data.Repositories
     public interface IAirlineRepository : IRepository<Airline>
     {
 
-        Airline GetAirlineByUserName(User user);
+        Airline GetAirlineByCustomerName(Customer customer);
         IEnumerable<Airline> GetAirlineByCountry(Country country);
     }
 

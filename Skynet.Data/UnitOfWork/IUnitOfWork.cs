@@ -8,7 +8,7 @@ namespace Skynet.Data.UnitOfWork
         IAirlineRepository Airlines { get; }
         ICountryRepository Countries { get; }
         IFlightRepository Flights { get; }
-        IUserRepository Users { get; }
+        ICustomerRepository Customers { get; }
 
         int Complete();
     }

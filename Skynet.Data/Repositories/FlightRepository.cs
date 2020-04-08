@@ -16,12 +16,12 @@ namespace Skynet.Data.Repositories
             _context = context;
         }
 
-        public IEnumerable<Flight> GetFlightsByUser(User user)
+        public IEnumerable<Flight> GetFlightsByUser(Customer customer)
         {
             var flights = _context.Set<Flight>()
                 .Include(t => t.Tickets)
-                .ThenInclude(u => u.User)
-                .Where(p => p.Id.Equals(user.Id))
+                .ThenInclude(u => u.Customer)
+                .Where(p => p.Id.Equals(customer.Id))
                 .ToList();
 
             return flights;
@@ -70,7 +70,7 @@ namespace Skynet.Data.Repositories
 {
     public interface IFlightRepository : IRepository<Flight>
     {
-        IEnumerable<Flight> GetFlightsByUser(User user);
+        IEnumerable<Flight> GetFlightsByUser(Customer user);
         IEnumerable<Flight> GetFlightsByLandingDate(DateTime landingDate);
         IEnumerable<Flight> GetFlightsByDepartureDate(DateTime departureDate);
         IEnumerable<Flight> GetFlightsByOriginCountry(Country country);

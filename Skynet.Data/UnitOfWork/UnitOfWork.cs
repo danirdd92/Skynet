@@ -14,7 +14,7 @@ namespace Skynet.Data.UnitOfWork
             Airlines = new AirlineRepository(_context);
             Countries = new CountryRepository(_context);
             Flights = new FlightRepository(_context);
-            Users = new UserRepository(_context);
+            Customers = new CustomerRepository(_context);
         }
         public IAirlineRepository Airlines { get; private set; }
 
@@ -22,7 +22,7 @@ namespace Skynet.Data.UnitOfWork
 
         public IFlightRepository Flights { get; private set; }
 
-        public IUserRepository Users { get; private set; }
+        public ICustomerRepository Customers { get; private set; }
 
         public int Complete()
         {

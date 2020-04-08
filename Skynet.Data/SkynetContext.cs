@@ -9,8 +9,9 @@ namespace Skynet.Data
 
         public DbSet<Airline> Airlines { get; set; }
         public DbSet<Country> Countries { get; set; }
-        public DbSet<User> Users { get; set; }
+        public DbSet<Customer> Customers { get; set; }
         public DbSet<Flight> Flights { get; set; }
+        public DbSet<CustomerIdentity> CustomerIdentities { get; set; }
 
         public SkynetContext(DbContextOptions<SkynetContext> options) : base(options)
         {
@@ -19,25 +20,29 @@ namespace Skynet.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            modelBuilder.Entity<CustomerIdentity>()
+                .HasKey(i => i.CustomerId);
+
+            modelBuilder.Entity<Customer>()
+                .HasOne(i => i.CustomerIdentity)
+                .WithOne(c => c.Customer)
+                .HasForeignKey<CustomerIdentity>(i => i.CustomerId);
+
+
             // Many To Many For Users and Flights
             modelBuilder.Entity<Ticket>()
-                .HasKey(t => new { t.FlightId, t.UserId });
+                .HasKey(t => new { t.FlightId, t.CustomerId });
 
             modelBuilder.Entity<Ticket>()
-                .HasOne(c => c.User)
+                .HasOne(c => c.Customer)
                 .WithMany(t => t.Tickets)
-                .HasForeignKey(c => c.UserId);
+                .HasForeignKey(c => c.CustomerId);
 
             modelBuilder.Entity<Ticket>()
                 .HasOne(f => f.Flight)
                 .WithMany(t => t.Tickets)
                 .HasForeignKey(f => f.FlightId);
 
-            // One To One Users and User Description
-            modelBuilder.Entity<User>()
-                .HasOne(d => d.UserDescription)
-                .WithOne(u => u.User)
-                .HasForeignKey<UserDescription>(d => d.UserId);
 
             // Flight Entity FKs
             modelBuilder.Entity<Flight>()

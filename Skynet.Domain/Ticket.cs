@@ -8,10 +8,10 @@ namespace Skynet.Domain
         public int FlightId { get; set; }
 
         [Required]
-        public int UserId { get; set; }
+        public int CustomerId { get; set; }
 
 
         public virtual Flight Flight { get; set; }
-        public virtual User User { get; set; }
+        public virtual Customer Customer { get; set; }
     }
 }

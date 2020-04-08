@@ -7,11 +7,11 @@ namespace Skynet.Web.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class UsersController : ControllerBase
+    public class CustomerController : ControllerBase
     {
         private readonly IUnitOfWork _db;
 
-        public UsersController(IUnitOfWork db)
+        public CustomerController(IUnitOfWork db)
         {
             _db = db;
         }
@@ -19,49 +19,49 @@ namespace Skynet.Web.Controllers
 
 
         [HttpGet]
-        public ActionResult<User> GetAllUsers()
+        public ActionResult<Customer> GetAllCustomers()
         {
-            var users = _db.Users.GetAll();
-            return Ok(users);
+            var customers = _db.Customers.GetAll();
+            return Ok(customers);
         }
 
 
 
         [HttpGet("{id}")]
-        public ActionResult<User> GetUserById(int id)
+        public ActionResult<Customer> GetCustomerById(int id)
         {
-            var user = _db.Users.Get(id);
+            var customer = _db.Customers.Get(id);
 
-            if (user == null)
+            if (customer == null)
             {
                 return NotFound();
             }
 
-            return Ok(user);
+            return Ok(customer);
         }
 
 
 
         [HttpPost]
-        public ActionResult<User> PostUser([FromBody] User user)
+        public ActionResult<Customer> PostCustomer([FromBody] Customer customer)
         {
-            _db.Users.Add(user);
+            _db.Customers.Add(customer);
             _db.Complete();
 
-            return CreatedAtAction("GetUserById", new { id = user.Id }, user);
+            return CreatedAtAction("GetCustomerById", new { id = customer.Id }, customer);
         }
 
 
 
         [HttpPut("{id}")]
-        public ActionResult<User> UpdateUser(int id, [FromBody] User user)
+        public ActionResult<Customer> UpdateCustomer(int id, [FromBody] Customer customer)
         {
-            if (id != user.Id)
+            if (id != customer.Id)
             {
                 return BadRequest();
             }
 
-            _db.Users.Update(user);
+            _db.Customers.Update(customer);
 
             try
             {
@@ -69,9 +69,9 @@ namespace Skynet.Web.Controllers
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!UserExists(id, user))
+                if (!CustomerExists(id, customer))
                 {
-                    return NotFound(user);
+                    return NotFound(customer);
                 }
                 else
                 {
@@ -85,23 +85,23 @@ namespace Skynet.Web.Controllers
 
 
         [HttpDelete("{id}")]
-        public ActionResult<User> DeleteUser(int id)
+        public ActionResult<Customer> DeleteCustomer(int id)
         {
-            var user = _db.Users.Get(id);
-            if (user == null)
+            var customer = _db.Customers.Get(id);
+            if (customer == null)
             {
-                return NotFound(user);
+                return NotFound(customer);
             }
-            _db.Users.Remove(user);
+            _db.Customers.Remove(customer);
             _db.Complete();
-            return user;
+            return customer;
 
         }
 
 
-        private bool UserExists(int id, User user)
+        private bool CustomerExists(int id, Customer customer)
         {
-            if (_db.Users.Find(a => a.Id.Equals(user.Id)) == null)
+            if (_db.Customers.Find(a => a.Id.Equals(customer.Id)) == null)
             {
                 return false;
             }
