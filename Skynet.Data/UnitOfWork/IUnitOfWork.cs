@@ -1,5 +1,6 @@
 ﻿using Skynet.Data.Repositories;
 using System;
+using System.Threading.Tasks;
 
 namespace Skynet.Data.UnitOfWork
 {
@@ -10,6 +11,6 @@ namespace Skynet.Data.UnitOfWork
         IFlightRepository Flights { get; }
         ICustomerRepository Customers { get; }
 
-        int Complete();
+        Task<int> CompleteAsync();
     }
 }

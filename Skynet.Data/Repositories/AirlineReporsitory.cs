@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace Skynet.Data.Repositories
 {
@@ -14,25 +15,17 @@ namespace Skynet.Data.Repositories
         {
             _context = context;
         }
-        public IEnumerable<Airline> GetAirlineByCountry(Country country)
+        public async Task<IEnumerable<Airline>> GetAirlineByCountryAsync(Country country)
         {
-            var airlines = _context.Set<Airline>().Where(a => a.Country.Id.Equals(country.Id));
+            var airlines = await this.FindAsync(a => a.Country.Id.Equals(country.Id));
             return airlines;
-        }
-
-        public Airline GetAirlineByCustomerName(Customer customer)
-        {
-            // Todo: Return to this after authentication
-            throw new Exception("Not Implemented yet");
         }
     }
 
 
     public interface IAirlineRepository : IRepository<Airline>
     {
-
-        Airline GetAirlineByCustomerName(Customer customer);
-        IEnumerable<Airline> GetAirlineByCountry(Country country);
+        Task<IEnumerable<Airline>> GetAirlineByCountryAsync(Country country);
     }
 
 }

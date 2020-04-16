@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace Skynet.Data.Repositories
 {
@@ -16,50 +17,50 @@ namespace Skynet.Data.Repositories
             _context = context;
         }
 
-        public IEnumerable<Flight> GetFlightsByUser(Customer customer)
+        public async Task<IEnumerable<Flight>> GetFlightsByUserAsync(Customer customer)
         {
-            var flights = _context.Set<Flight>()
+            var flights = await _context.Set<Flight>()
                 .Include(t => t.Tickets)
                 .ThenInclude(u => u.Customer)
                 .Where(p => p.Id.Equals(customer.Id))
-                .ToList();
+                .ToListAsync();
 
             return flights;
         }
 
-        public IEnumerable<Flight> GetFlightsByDepartureDate(DateTime departureDate)
+        public async Task<IEnumerable<Flight>> GetFlightsByDepartureDateAsync(DateTime departureDate)
         {
-            var flights = _context.Set<Flight>()
+            var flights = await _context.Set<Flight>()
                 .Where(t => t.Departure.Date.Equals(departureDate.Date))
-                .ToList();
+                .ToListAsync();
 
             return flights;
         }
 
-        public IEnumerable<Flight> GetFlightsByDestination(Country country)
+        public async Task<IEnumerable<Flight>> GetFlightsByDestinationAsync(Country country)
         {
 
-            var flights = _context.Set<Flight>()
+            var flights = await _context.Set<Flight>()
                 .Where(t => t.DestinationCountryId.Equals(country.Id))
-                .ToList();
+                .ToListAsync();
 
             return flights;
         }
 
-        public IEnumerable<Flight> GetFlightsByLandingDate(DateTime landingDate)
+        public async Task<IEnumerable<Flight>> GetFlightsByLandingDateAsync(DateTime landingDate)
         {
-            var flights = _context.Set<Flight>()
+            var flights = await _context.Set<Flight>()
                 .Where(t => t.Arrival.Date.Equals(landingDate.Date))
-                .ToList();
+                .ToListAsync();
 
             return flights;
         }
 
-        public IEnumerable<Flight> GetFlightsByOriginCountry(Country country)
+        public async Task<IEnumerable<Flight>> GetFlightsByOriginCountryAsync(Country country)
         {
-            var flights = _context.Set<Flight>()
+            var flights = await _context.Set<Flight>()
                .Where(t => t.OriginCountry.Id.Equals(country.Id))
-                .ToList();
+                .ToListAsync();
 
             return flights;
         }
@@ -70,11 +71,11 @@ namespace Skynet.Data.Repositories
 {
     public interface IFlightRepository : IRepository<Flight>
     {
-        IEnumerable<Flight> GetFlightsByUser(Customer user);
-        IEnumerable<Flight> GetFlightsByLandingDate(DateTime landingDate);
-        IEnumerable<Flight> GetFlightsByDepartureDate(DateTime departureDate);
-        IEnumerable<Flight> GetFlightsByOriginCountry(Country country);
-        IEnumerable<Flight> GetFlightsByDestination(Country country);
+        Task<IEnumerable<Flight>> GetFlightsByUserAsync(Customer user);
+        Task<IEnumerable<Flight>> GetFlightsByLandingDateAsync(DateTime landingDate);
+        Task<IEnumerable<Flight>> GetFlightsByDepartureDateAsync(DateTime departureDate);
+        Task<IEnumerable<Flight>> GetFlightsByOriginCountryAsync(Country country);
+        Task<IEnumerable<Flight>> GetFlightsByDestinationAsync(Country country);
     }
 
 }

@@ -3,22 +3,24 @@ using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 
 namespace Skynet.Data.Repositories
 {
     public interface IRepository<T>
     {
-        T Get(int id);
-        IEnumerable<T> GetAll();
-        IEnumerable<T> Find(Expression<Func<T, bool>> predicate);
+        Task<T> GetAsync(int id);
+        Task<IEnumerable<T>> GetAllAsync();
+        Task<IEnumerable<T>> FindAsync(Expression<Func<T, bool>> predicate);
 
-        void Add(T item);
-        void AddRange(IEnumerable<T> items);
+        Task AddAsync(T item);
+        Task AddRangeAsync(IEnumerable<T> items);
 
-        void Remove(T item);
-        void RemoveRange(IEnumerable<T> items);
+        Task RemoveAsync(T item);
+        Task RemoveRangeAsync(IEnumerable<T> items);
 
-        void Update(T item);
+        Task UpdateAsync(T item);
 
     }
 
@@ -30,44 +32,55 @@ namespace Skynet.Data.Repositories
         {
             _context = context;
         }
-        public void Add(T item)
+
+        public async Task AddAsync(T item)
         {
-            _context.Set<T>().Add(item);
+            await _context.Set<T>().AddAsync(item);
         }
 
-        public void AddRange(IEnumerable<T> items)
+        public async Task AddRangeAsync(IEnumerable<T> items)
         {
-            _context.Set<T>().AddRange(items);
+            await _context.Set<T>().AddRangeAsync(items);
         }
 
-        public IEnumerable<T> Find(Expression<Func<T, bool>> predicate)
+        public async Task<IEnumerable<T>> FindAsync(Expression<Func<T, bool>> predicate)
         {
-            return _context.Set<T>().Where(predicate);
+            return await _context.Set<T>().Where(predicate).ToListAsync();
         }
 
-        public T Get(int id)
+        public async Task<T> GetAsync(int id)
         {
-            return _context.Set<T>().Find(id);
+            return await _context.Set<T>().FindAsync(id);
         }
 
-        public IEnumerable<T> GetAll()
+        public async Task<IEnumerable<T>> GetAllAsync()
         {
-            return _context.Set<T>().ToList();
+            return await _context.Set<T>().ToListAsync();
         }
 
-        public void Remove(T item)
+        public async Task RemoveAsync(T item)
         {
-            _context.Set<T>().Remove(item);
+            await Task.Run(() =>
+            {
+                _context.Set<T>().Remove(item);
+            });
         }
 
-        public void RemoveRange(IEnumerable<T> items)
+        public async Task RemoveRangeAsync(IEnumerable<T> items)
         {
-            _context.Set<T>().RemoveRange(items);
+            await Task.Run(() =>
+            {
+                _context.Set<T>().RemoveRange(items);
+            });
         }
 
-        public void Update(T item)
+        public async Task UpdateAsync(T item)
         {
-            _context.Set<T>().Update(item);
+            await Task.Run(() =>
+            {
+                _context.Entry(item).State = EntityState.Modified;
+                _context.Set<T>().Update(item);
+            });
         }
     }
 }

@@ -1,7 +1,9 @@
 ﻿using Skynet.Domain;
 using System.Data;
 using System.Linq;
-
+using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
+ 
 namespace Skynet.Data.Repositories
 {
     public class CustomerRepository : Repository<Customer>, ICustomerRepository
@@ -13,18 +15,18 @@ namespace Skynet.Data.Repositories
             _context = context;
         }
 
-        public Customer GetCustomerByFirstName(string firstName)
+        public async Task<Customer> GetCustomerByFirstNameAsync(string firstName)
         {
-            var customer = _context.Set<Customer>()
+            var customer = await _context.Set<Customer>()
                 .Where(u => u.FirstName.Equals(firstName))
-                .FirstOrDefault();
+                .FirstOrDefaultAsync();
             return customer;
         }
     }
 
     public interface ICustomerRepository : IRepository<Customer>
     {
-        Customer GetCustomerByFirstName(string userName);
+        Task<Customer> GetCustomerByFirstNameAsync(string userName);
     }
 
 }

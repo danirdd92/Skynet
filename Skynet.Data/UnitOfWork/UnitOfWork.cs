@@ -1,5 +1,6 @@
 ﻿using Skynet.Data.Repositories;
 using System;
+using System.Threading.Tasks;
 
 namespace Skynet.Data.UnitOfWork
 {
@@ -24,9 +25,9 @@ namespace Skynet.Data.UnitOfWork
 
         public ICustomerRepository Customers { get; private set; }
 
-        public int Complete()
+        public async Task<int> CompleteAsync()
         {
-            return _context.SaveChanges();
+             return await _context.SaveChangesAsync();
         }
 
         #region Dispose
