@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Skynet.Data.UnitOfWork;
 using Skynet.Domain;
+using System.Threading.Tasks;
 
 namespace Skynet.Web.Controllers
 {
@@ -19,18 +20,18 @@ namespace Skynet.Web.Controllers
 
 
         [HttpGet]
-        public ActionResult<Customer> GetAllCustomers()
+        public async Task<ActionResult<Customer>> GetAllCustomers()
         {
-            var customers = _db.Customers.GetAll();
+            var customers = await _db.Customers.GetAllAsync();
             return Ok(customers);
         }
 
 
 
         [HttpGet("{id}")]
-        public ActionResult<Customer> GetCustomerById(int id)
+        public async Task<ActionResult<Customer>> GetCustomerById(int id)
         {
-            var customer = _db.Customers.Get(id);
+            var customer = await _db.Customers.GetAsync(id);
 
             if (customer == null)
             {
@@ -43,10 +44,10 @@ namespace Skynet.Web.Controllers
 
 
         [HttpPost]
-        public ActionResult<Customer> PostCustomer([FromBody] Customer customer)
+        public async Task<ActionResult<Customer>> PostCustomer([FromBody] Customer customer)
         {
-            _db.Customers.Add(customer);
-            _db.Complete();
+            await _db.Customers.AddAsync(customer);
+            await _db.CompleteAsync();
 
             return CreatedAtAction("GetCustomerById", new { id = customer.Id }, customer);
         }
@@ -54,18 +55,18 @@ namespace Skynet.Web.Controllers
 
 
         [HttpPut("{id}")]
-        public ActionResult<Customer> UpdateCustomer(int id, [FromBody] Customer customer)
+        public async Task<ActionResult<Customer>> UpdateCustomer(int id, [FromBody] Customer customer)
         {
             if (id != customer.Id)
             {
                 return BadRequest();
             }
 
-            _db.Customers.Update(customer);
+            await _db.Customers.UpdateAsync(customer);
 
             try
             {
-                _db.Complete();
+                await _db.CompleteAsync();
             }
             catch (DbUpdateConcurrencyException)
             {
@@ -85,15 +86,15 @@ namespace Skynet.Web.Controllers
 
 
         [HttpDelete("{id}")]
-        public ActionResult<Customer> DeleteCustomer(int id)
+        public async Task<ActionResult<Customer>> DeleteCustomer(int id)
         {
-            var customer = _db.Customers.Get(id);
+            var customer = await _db.Customers.GetAsync(id);
             if (customer == null)
             {
                 return NotFound(customer);
             }
-            _db.Customers.Remove(customer);
-            _db.Complete();
+            await _db.Customers.RemoveAsync(customer);
+            await _db.CompleteAsync();
             return customer;
 
         }
@@ -101,7 +102,7 @@ namespace Skynet.Web.Controllers
 
         private bool CustomerExists(int id, Customer customer)
         {
-            if (_db.Customers.Find(a => a.Id.Equals(customer.Id)) == null)
+            if (_db.Customers.FindAsync(a => a.Id.Equals(customer.Id)) == null)
             {
                 return false;
             }

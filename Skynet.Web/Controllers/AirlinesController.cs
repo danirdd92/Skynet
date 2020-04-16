@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using Skynet.Data.UnitOfWork;
 using Skynet.Domain;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace Skynet.Web.Controllers
 {
@@ -22,9 +23,9 @@ namespace Skynet.Web.Controllers
         /// </summary>
         /// <returns>Returns All Airlines</returns>
         [HttpGet]
-        public ActionResult<Airline> GetAllAirlines()
+        public async Task<ActionResult<Airline>> GetAllAirlines()
         {
-            var airlines = _db.Airlines.GetAll();
+            var airlines = await _db.Airlines.GetAllAsync();
             return Ok(airlines);
         }
 
@@ -35,9 +36,9 @@ namespace Skynet.Web.Controllers
         /// <param name="id">Id of the airline</param>
         /// <returns>Airline object with said id</returns>
         [HttpGet("{id}", Name = "Get")]
-        public ActionResult<Airline> GetAirlineById(int id)
+        public async Task<ActionResult<Airline>> GetAirlineById(int id)
         {
-            var airline = _db.Airlines.Get(id);
+            var airline = await _db.Airlines.GetAsync(id);
 
             if (airline == null)
             {
@@ -53,10 +54,10 @@ namespace Skynet.Web.Controllers
         /// <param name="id">The id of the country</param>
         /// <returns>List of airlines from specific country</returns>
         [HttpGet("/Country/{id}")]
-        public ActionResult<IEnumerable<Airline>> GetAirlineByCountry(int id)
+        public async Task<ActionResult<IEnumerable<Airline>>> GetAirlineByCountry(int id)
         {
-            var country = _db.Countries.Get(id);
-            var airlines = _db.Airlines.GetAirlineByCountry(country);
+            var country = await _db.Countries.GetAsync(id);
+            var airlines = await _db.Airlines.GetAirlineByCountryAsync(country);
             return Ok(airlines);
         }
 
@@ -66,10 +67,10 @@ namespace Skynet.Web.Controllers
         /// <param name="airline">json representation of the airline object</param>
         /// <returns>Returns 204</returns>
         [HttpPost]
-        public ActionResult<Airline> PostAirline([FromBody] Airline airline)
+        public async Task<ActionResult<Airline>> PostAirline([FromBody] Airline airline)
         {
-            _db.Airlines.Add(airline);
-            _db.Complete();
+            await _db.Airlines.AddAsync(airline);
+            await _db.CompleteAsync();
 
             return CreatedAtAction("GetAirlineById", new { id = airline.Id }, airline);
         }
@@ -81,18 +82,18 @@ namespace Skynet.Web.Controllers
         /// <param name="id">if of the airline to change</param>
         /// <param name="airline">specify all changes into the object</param>
         [HttpPut("{id}")]
-        public ActionResult<Airline> UpdateAirline(int id, [FromBody] Airline airline)
+        public async Task<ActionResult<Airline>> UpdateAirline(int id, [FromBody] Airline airline)
         {
             if (id != airline.Id)
             {
                 return BadRequest();
             }
 
-            _db.Airlines.Update(airline);
+            await _db.Airlines.UpdateAsync(airline);
 
             try
             {
-                _db.Complete();
+                await _db.CompleteAsync();
             }
             catch (DbUpdateConcurrencyException)
             {
@@ -115,22 +116,22 @@ namespace Skynet.Web.Controllers
         /// <param name="id">Id of the airline to delete</param>
         /// <returns>Returns the deleted airlines for further manupulation</returns>
         [HttpDelete("{id}")]
-        public ActionResult<Airline> DeleteAirline(int id)
+        public async Task<ActionResult<Airline>> DeleteAirline(int id)
         {
-            var airline = _db.Airlines.Get(id);
+            var airline = await _db.Airlines.GetAsync(id);
             if (airline == null)
             {
                 return NotFound(airline);
             }
-            _db.Airlines.Remove(airline);
-            _db.Complete();
+            await _db.Airlines.RemoveAsync(airline);
+            await _db.CompleteAsync();
             return airline;
 
         }
 
         private bool AirlineExists(int id, Airline airline)
         {
-            if (_db.Airlines.Find(a => a.Id.Equals(airline.Id)) == null)
+            if (_db.Airlines.FindAsync(a => a.Id.Equals(airline.Id)) == null)
             {
                 return false;
             }

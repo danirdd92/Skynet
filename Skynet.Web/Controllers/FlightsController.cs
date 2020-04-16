@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Skynet.Data.UnitOfWork;
 using Skynet.Domain;
+using System.Threading.Tasks;
 
 namespace Skynet.Web.Controllers
 {
@@ -19,18 +20,18 @@ namespace Skynet.Web.Controllers
 
 
         [HttpGet]
-        public ActionResult<Flight> GetAllFlights()
+        public async Task<ActionResult<Flight>> GetAllFlights()
         {
-            var flights = _db.Flights.GetAll();
+            var flights = await _db.Flights.GetAllAsync();
             return Ok(flights);
         }
 
 
 
         [HttpGet("{id}")]
-        public ActionResult<Flight> GetFlightById(int id)
+        public async Task<ActionResult<Flight>> GetFlightById(int id)
         {
-            var flight = _db.Flights.Get(id);
+            var flight = await _db.Flights.GetAsync(id);
 
             if (flight == null)
             {
@@ -43,10 +44,10 @@ namespace Skynet.Web.Controllers
 
 
         [HttpPost]
-        public ActionResult<Flight> PostFlight([FromBody] Flight flight)
+        public async Task<ActionResult<Flight>> PostFlight([FromBody] Flight flight)
         {
-            _db.Flights.Add(flight);
-            _db.Complete();
+            await _db.Flights.AddAsync(flight);
+            await _db.CompleteAsync();
 
             return CreatedAtAction("GetFlightById", new { id = flight.Id }, flight);
         }
@@ -54,18 +55,18 @@ namespace Skynet.Web.Controllers
 
 
         [HttpPut("{id}")]
-        public ActionResult<Flight> UpdateFlight(int id, [FromBody] Flight flight)
+        public async Task<ActionResult<Flight>> UpdateFlight(int id, [FromBody] Flight flight)
         {
             if (id != flight.Id)
             {
                 return BadRequest();
             }
 
-            _db.Flights.Update(flight);
+            await _db.Flights.UpdateAsync(flight);
 
             try
             {
-                _db.Complete();
+                await _db.CompleteAsync();
             }
             catch (DbUpdateConcurrencyException)
             {
@@ -85,15 +86,15 @@ namespace Skynet.Web.Controllers
 
 
         [HttpDelete("{id}")]
-        public ActionResult<Flight> DeleteAirline(int id)
+        public async Task<ActionResult<Flight>> DeleteAirline(int id)
         {
-            var flight = _db.Flights.Get(id);
+            var flight = await _db.Flights.GetAsync(id);
             if (flight == null)
             {
                 return NotFound(flight);
             }
-            _db.Flights.Remove(flight);
-            _db.Complete();
+            await _db.Flights.RemoveAsync(flight);
+            await _db.CompleteAsync();
             return flight;
 
         }
@@ -101,7 +102,7 @@ namespace Skynet.Web.Controllers
 
         private bool FlightExists(int id, Flight flight)
         {
-            if (_db.Flights.Find(a => a.Id.Equals(flight.Id)) == null)
+            if (_db.Flights.FindAsync(a => a.Id.Equals(flight.Id)) == null)
             {
                 return false;
             }

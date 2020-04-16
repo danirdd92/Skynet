@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Skynet.Data.UnitOfWork;
 using Skynet.Domain;
+using System.Threading.Tasks;
 
 namespace Skynet.Web.Controllers
 {
@@ -19,18 +20,18 @@ namespace Skynet.Web.Controllers
 
 
         [HttpGet]
-        public ActionResult<Country> GetAllCountries()
+        public async Task<ActionResult<Country>> GetAllCountries()
         {
-            var countries = _db.Countries.GetAll();
+            var countries = await _db.Countries.GetAllAsync();
             return Ok(countries);
         }
 
 
 
         [HttpGet("{id}")]
-        public ActionResult<Country> GetCountryById(int id)
+        public async Task<ActionResult<Country>> GetCountryById(int id)
         {
-            var country = _db.Countries.Get(id);
+            var country = await _db.Countries.GetAsync(id);
 
             if (country == null)
             {
@@ -43,10 +44,10 @@ namespace Skynet.Web.Controllers
 
 
         [HttpPost]
-        public ActionResult<Country> PostCountry([FromBody] Country country)
+        public async Task<ActionResult<Country>> PostCountry([FromBody] Country country)
         {
-            _db.Countries.Add(country);
-            _db.Complete();
+            await _db.Countries.AddAsync(country);
+            await _db.CompleteAsync();
 
             return CreatedAtAction("GetCountryById", new { id = country.Id }, country);
         }
@@ -54,18 +55,18 @@ namespace Skynet.Web.Controllers
 
 
         [HttpPut("{id}")]
-        public ActionResult<Country> UpdateCountry(int id, [FromBody] Country country)
+        public async Task<ActionResult<Country>> UpdateCountry(int id, [FromBody] Country country)
         {
             if (id != country.Id)
             {
                 return BadRequest();
             }
 
-            _db.Countries.Update(country);
+            await _db.Countries.UpdateAsync(country);
 
             try
             {
-                _db.Complete();
+                await _db.CompleteAsync();
             }
             catch (DbUpdateConcurrencyException)
             {
@@ -85,15 +86,15 @@ namespace Skynet.Web.Controllers
 
 
         [HttpDelete("{id}")]
-        public ActionResult<Country> DeleteCountry(int id)
+        public async Task<ActionResult<Country>> DeleteCountry(int id)
         {
-            var country = _db.Countries.Get(id);
+            var country = await _db.Countries.GetAsync(id);
             if (country == null)
             {
                 return NotFound(country);
             }
-            _db.Countries.Remove(country);
-            _db.Complete();
+            await _db.Countries.RemoveAsync(country);
+            await _db.CompleteAsync();
             return country;
 
         }
@@ -101,7 +102,7 @@ namespace Skynet.Web.Controllers
 
         private bool CountryExists(int id, Country country)
         {
-            if (_db.Countries.Find(a => a.Id.Equals(country.Id)) == null)
+            if (_db.Countries.FindAsync(a => a.Id.Equals(country.Id)) == null)
             {
                 return false;
             }
