@@ -7,7 +7,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Skynet.Domain", "Skynet.Dom
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Skynet.Data", "Skynet.Data\Skynet.Data.csproj", "{340643F9-E645-42B9-B390-C9BED8C0A8C6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Skynet.Web", "Skynet.Web\Skynet.Web.csproj", "{F154BB45-240B-47FE-A7B1-B35F42FC601E}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Skynet.Web", "Skynet.Web\Skynet.Web.csproj", "{56C98F7A-85FD-415F-B6C0-F15553CF6EC9}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -23,10 +23,10 @@ Global
 		{340643F9-E645-42B9-B390-C9BED8C0A8C6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{340643F9-E645-42B9-B390-C9BED8C0A8C6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{340643F9-E645-42B9-B390-C9BED8C0A8C6}.Release|Any CPU.Build.0 = Release|Any CPU
-		{F154BB45-240B-47FE-A7B1-B35F42FC601E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{F154BB45-240B-47FE-A7B1-B35F42FC601E}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{F154BB45-240B-47FE-A7B1-B35F42FC601E}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{F154BB45-240B-47FE-A7B1-B35F42FC601E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{56C98F7A-85FD-415F-B6C0-F15553CF6EC9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{56C98F7A-85FD-415F-B6C0-F15553CF6EC9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{56C98F7A-85FD-415F-B6C0-F15553CF6EC9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{56C98F7A-85FD-415F-B6C0-F15553CF6EC9}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

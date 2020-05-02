@@ -8,22 +8,6 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Skynet.Data.Repositories
 {
-    public interface IRepository<T>
-    {
-        Task<T> GetAsync(int id);
-        Task<IEnumerable<T>> GetAllAsync();
-        Task<IEnumerable<T>> FindAsync(Expression<Func<T, bool>> predicate);
-
-        Task AddAsync(T item);
-        Task AddRangeAsync(IEnumerable<T> items);
-
-        Task RemoveAsync(T item);
-        Task RemoveRangeAsync(IEnumerable<T> items);
-
-        Task UpdateAsync(T item);
-
-    }
-
     public class Repository<T> : IRepository<T> where T : class
     {
         private readonly SkynetContext _context;
@@ -82,5 +66,20 @@ namespace Skynet.Data.Repositories
                 _context.Set<T>().Update(item);
             });
         }
+    }
+
+    public interface IRepository<T>
+    {
+        Task<T> GetAsync(int id);
+        Task<IEnumerable<T>> GetAllAsync();
+        Task<IEnumerable<T>> FindAsync(Expression<Func<T, bool>> predicate);
+
+        Task AddAsync(T item);
+        Task AddRangeAsync(IEnumerable<T> items);
+
+        Task RemoveAsync(T item);
+        Task RemoveRangeAsync(IEnumerable<T> items);
+
+        Task UpdateAsync(T item);
     }
 }

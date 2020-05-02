@@ -65,10 +65,7 @@ namespace Skynet.Data.Repositories
             return flights;
         }
     }
-}
 
-namespace Skynet.Data.Repositories
-{
     public interface IFlightRepository : IRepository<Flight>
     {
         Task<IEnumerable<Flight>> GetFlightsByUserAsync(Customer user);
@@ -77,5 +74,8 @@ namespace Skynet.Data.Repositories
         Task<IEnumerable<Flight>> GetFlightsByOriginCountryAsync(Country country);
         Task<IEnumerable<Flight>> GetFlightsByDestinationAsync(Country country);
     }
-
 }
+
+
+    
+
