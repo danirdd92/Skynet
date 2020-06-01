@@ -26,7 +26,7 @@ namespace Skynet.Web.Areas.Identity.Pages.Account
         private readonly ILogger<RegisterModel> _logger;
         private readonly IEmailSender _emailSender;
         private readonly IUnitOfWork _db;
-
+        private readonly string _userRole = "Customer";
         public RegisterModel(
             UserManager<IdentityUser> userManager,
             SignInManager<IdentityUser> signInManager,
@@ -94,7 +94,12 @@ namespace Skynet.Web.Areas.Identity.Pages.Account
                 var result = await _userManager.CreateAsync(user, Input.Password);
                 if (result.Succeeded)
                 {
-                   await _db.Customers.AddAsync(new Customer { FirstName = Input.FirstName, LastName = Input.LastName, Age = Input.Age, CustomerIdentity = new CustomerIdentity { UserGuid = user.Id } });
+                    // Assign Customer Role To New User
+                    var createdUser = await _userManager.FindByNameAsync(Input.Email);
+                    await _userManager.AddToRoleAsync(createdUser, _userRole);
+
+                    // Link the user to the app db
+                    await _db.Customers.AddAsync(new Customer { FirstName = Input.FirstName, LastName = Input.LastName, Age = Input.Age, CustomerIdentity = new CustomerIdentity { UserGuid = user.Id } });
                     await _db.CompleteAsync();
                     _logger.LogInformation("User created a new account with password.");
 

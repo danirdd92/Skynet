@@ -42,10 +42,12 @@ namespace Skynet.Web
 
             // Dependency Injection
             services.AddTransient<IUnitOfWork, UnitOfWork>();
-            //services.AddSingleton<IContractResolver, CustomResolver>();
+
+
 
             // Authentication and Authorization 
             services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
+                .AddRoles<IdentityRole>()
                 .AddEntityFrameworkStores<ApplicationDbContext>();
 
             // Swagger
