@@ -37,8 +37,10 @@ namespace Skynet.Web
                     Configuration.GetConnectionString("SkynetAuthDB")));
             // Skynet Database
             services.AddDbContext<SkynetContext>(options =>
-                options.UseSqlServer(
-                    Configuration.GetConnectionString("Skynet")));
+                options.UseLazyLoadingProxies()
+                .UseSqlServer(
+                    Configuration.GetConnectionString("Skynet"))
+                );
 
             // Dependency Injection
             services.AddTransient<IUnitOfWork, UnitOfWork>();
