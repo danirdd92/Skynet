@@ -12,6 +12,8 @@ namespace Skynet.Domain
         [MaxLength(128)]
         public string Name { get; set; }
 
+        public string Abbreviation { get; set; }
+
         [Required]
         public int CountryId { get; set; }
 
