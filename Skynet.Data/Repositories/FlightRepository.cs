@@ -64,6 +64,38 @@ namespace Skynet.Data.Repositories
 
             return flights;
         }
+
+        public async Task<(IEnumerable<Flight>, List<string>)> GetUpcomingFlightsAsync()
+        {
+            var time = DateTime.Now;
+            var timespan = time.AddHours(10);    
+
+            var flights = await _context.Set<Flight>()
+                .Where(t => t.Departure >= time)
+                .Where(t => t.Departure <= timespan)
+                .ToListAsync()
+                ;
+
+            var idList = new List<string>(flights.Count);
+
+            foreach (var flight in flights)
+            {
+                string abrvId = string.Empty;
+                if (flight.Airline.Abbreviation != null)
+                {
+                    abrvId = flight.Airline.Abbreviation + flight.Id.ToString();
+
+                    idList.Add(abrvId);
+                }
+                else
+                {
+                    abrvId = flight.Id.ToString();
+                }
+                
+            }
+
+            return (flights, idList);
+        }
     }
 
     public interface IFlightRepository : IRepository<Flight>
@@ -73,9 +105,10 @@ namespace Skynet.Data.Repositories
         Task<IEnumerable<Flight>> GetFlightsByDepartureDateAsync(DateTime departureDate);
         Task<IEnumerable<Flight>> GetFlightsByOriginCountryAsync(Country country);
         Task<IEnumerable<Flight>> GetFlightsByDestinationAsync(Country country);
+        Task<(IEnumerable<Flight>, List<string>)> GetUpcomingFlightsAsync();
     }
 }
 
 
-    
+
 
