@@ -29,7 +29,7 @@ namespace Skynet.Web.Pages
 
         public async Task OnGetAsync()
         {
-            //await CreateRoles();
+            await CreateRoles();
 
             //await FillDatabase();
         }

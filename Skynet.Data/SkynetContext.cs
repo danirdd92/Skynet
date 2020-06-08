@@ -5,7 +5,7 @@ namespace Skynet.Data
 {
     public class SkynetContext : DbContext
     {
-        private readonly DbContextOptions<SkynetContext> _options;
+        //private readonly DbContextOptions<SkynetContext> _options;
 
         public DbSet<Airline> Airlines { get; set; }
         public DbSet<Country> Countries { get; set; }

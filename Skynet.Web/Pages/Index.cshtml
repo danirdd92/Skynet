@@ -4,56 +4,43 @@
     ViewData["Title"] = "Home page";
 }
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - Skynet</title>
-    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
-    <link rel="stylesheet" href="~/css/site.css" />
-</head>
-<body>
-
-    <div class="container">
+    <div class="container border">
         <h1 class=" display-4 mb-1">Upcoming Flights:</h1>
+        @if (Model.Flights.Count == 0)
+        {
+            {
 
-        <table class="table table-bordered table-striped">
-            <thead>
-                <tr>
-                    <th scope="col">Flight</th>
-                    <th scope="col">Departing From</th>
-                    <th scope="col">Departure </th>
-                    <th scope="col">Arriving To</th>
-                    <th scope="col">Est Arrival </th>
-                </tr>
-            </thead>
-            <tbody>
-                @{
-                    if (Model.Flights.Count() > 0)
+                <p class=" h4 text-danger">There are no upcoming flights in the next 10 hours. </p>
+            }
+        }
+        else
+        {
+            <table class="table table-bordered table-striped">
+                <thead>
+                    <tr>
+                        <th scope="col">Flight</th>
+                        <th scope="col">Departing From</th>
+                        <th scope="col">Departure </th>
+                        <th scope="col">Arriving To</th>
+                        <th scope="col">Est Arrival </th>
+                    </tr>
+                </thead>
+                <tbody>
+
+                    @foreach (var flight in Model.Flights)
                     {
-                        foreach (var flight in Model.Flights)
-                        {
-                            <tr>
-                                <td>@Html.DisplayFor(m => flight.Id)</td>
-                                <td>@Html.DisplayFor(m => flight.OutboundCountry)</td>
-                                <td>@Html.DisplayFor(m => flight.DepartureTime)</td>
-                                <td>@Html.DisplayFor(m => flight.InboundCountry)</td>
-                                <td>@Html.DisplayFor(m => flight.ArrivalTime)</td>
-                            </tr>
-                        }
+                        <tr>
+                            <td>@Html.DisplayFor(m => flight.Id)</td>
+                            <td>@Html.DisplayFor(m => flight.OutboundCountry)</td>
+                            <td>@Html.DisplayFor(m => flight.DepartureTime)</td>
+                            <td>@Html.DisplayFor(m => flight.InboundCountry)</td>
+                            <td>@Html.DisplayFor(m => flight.ArrivalTime)</td>
+                        </tr>
                     }
-                    else
-                    {
-
-                        <p class=" h4 text-danger">There are no upcoming flights in the next 10 hours. </p>
                     }
+                    }
+                </tbody>
+            </table>
+        }
 
-                }
-            </tbody>
-        </table>
     </div>
-
-
-</body>
-</html>
