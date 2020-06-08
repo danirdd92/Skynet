@@ -11,14 +11,12 @@ Airline Management System
   * Entity Framework 3.1 Core For Data Access.
   
 ### Current Phase:
-* Further improvments to the API
-* Implementation of ASP.NET Core Identity 
+* ASP.NET Core As Back-End 
+  * Front-End Framework Angular/Vue or Blazor
 
 ### Planned Features:
 * Desktop UI
   * MVVM - using Reactive UI
   * Impelemntation of Reactive patterns 
-* ASP.NET Core Front-End 
-  * Routing with MVC 
-  * Front-End Framework Angular/Vue/Blazor
+
   
