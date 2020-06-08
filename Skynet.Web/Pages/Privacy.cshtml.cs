@@ -29,9 +29,9 @@ namespace Skynet.Web.Pages
 
         public async Task OnGetAsync()
         {
-            await CreateRoles();
+            //await CreateRoles();
 
-            //await FillDatabase();
+            await FillDatabase();
         }
 
         private async Task CreateRoles()
@@ -62,15 +62,26 @@ namespace Skynet.Web.Pages
 
             foreach (var a in airlines)
             {
-                var  array = a.Name.Split(' ');
                 string abrv = string.Empty;
 
-                foreach (var x in array)
+                if (a.Name.Contains(' '))
                 {
-                    abrv += x.First();
+                    var array = a.Name.Split(' ');
+
+                    foreach (var x in array)
+                    {
+                        abrv += x.First();
+                    }
+
+                    a.Abbreviation = abrv;
                 }
 
-                a.Abbreviation = abrv;
+                else
+                {
+                    abrv = a.Name.Substring(0, 3);
+                    a.Abbreviation = abrv.ToUpper();
+                }
+               
 
             }
 

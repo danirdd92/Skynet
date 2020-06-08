@@ -8,10 +8,7 @@
         <h1 class=" display-4 mb-1">Upcoming Flights:</h1>
         @if (Model.Flights.Count == 0)
         {
-            {
-
-                <p class=" h4 text-danger">There are no upcoming flights in the next 10 hours. </p>
-            }
+                <p class="h4 text-danger">There are no upcoming flights in the next 10 hours.</p>
         }
         else
         {
@@ -36,8 +33,6 @@
                             <td>@Html.DisplayFor(m => flight.InboundCountry)</td>
                             <td>@Html.DisplayFor(m => flight.ArrivalTime)</td>
                         </tr>
-                    }
-                    }
                     }
                 </tbody>
             </table>
